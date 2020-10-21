@@ -1,0 +1,7 @@
+title Exercise 0.4
+
+browser->server: user input (new_note)
+server->browser: notes.html
+server->browser: main.css
+server->browser: main.js
+server->browser: data.json
