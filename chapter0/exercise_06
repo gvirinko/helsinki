@@ -1,0 +1,4 @@
+title Exercise 0.6
+
+note left of browser: browser re-renders notes list
+browser->server: HTTP POST: new_note_spa.json
