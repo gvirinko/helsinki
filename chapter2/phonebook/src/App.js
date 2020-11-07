@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
 
 const App = () => {
-    const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [newFilterName, setFilterName] = useState('');
+    const [persons, setPersons] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get('http://localhost:3001/persons')
+            .then(response => {
+                setPersons(response.data);
+            })
+    }, []);
 
     const addName = (event) => {
         event.preventDefault();
@@ -20,18 +24,18 @@ const App = () => {
             window.alert(`${newName} is already added to the phonebook`);
         } else {
             setPersons([...persons, { name: newName, number: newNumber }]);
+            console.log(event.target.value);
             setNewName("");
             setNewNumber("");
-
         }
     }
 
-    const handleNameChange = (event) => {
+    const handleChangeName = (event) => {
         event.preventDefault();
         setNewName(event.target.value);
     }
 
-    const handleNumberChange = (event) => {
+    const handleChangeNumber = (event) => {
         event.preventDefault();
         setNewNumber(event.target.value);
     }
@@ -47,8 +51,8 @@ const App = () => {
           <Filter onChange={handleFiltering}/>
           <h3>Add a new:</h3>
           <PersonForm
-              onNameChange={handleNameChange}
-              onNumberChange={handleNumberChange}
+              onChangeName={handleChangeName}
+              onChangeNumber={handleChangeNumber}
               onClick={addName} />
           <h2>Numbers</h2>
           <Persons list={persons} filter={newFilterName}/>
