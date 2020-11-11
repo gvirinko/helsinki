@@ -3,20 +3,27 @@ import personService from './services/persons';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Persons from './components/Persons';
+import Notification from './components/Notification'
 
 const App = () => {
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
     const [newFilterName, setFilterName] = useState('');
     const [persons, setPersons] = useState([]);
+    const [notificationMessage, setNotificationMessage] = useState();
+    const [notificationType, setNotificationType] = useState();
+
+
 
     useEffect(() => {
         // Getting data from server and saving to state
         personService
             .getItems()
-            .then(initialList => {
-                setPersons(initialList);
-            })
+            .then(initialList => setPersons(initialList))
+            .catch(error => {
+                setNotificationMessage("No connection with server.");
+                setNotificationType("error");
+            });
     }, []);
 
     const addName = (event) => {
@@ -37,6 +44,10 @@ const App = () => {
                         setPersons(persons.map(person => person.id !== updPerson.id ? person : updPerson));
                         setNewNumber("");
                     })
+                    .catch(error => {
+                        setNotificationMessage("An error occured.");
+                        setNotificationType("error");
+                    });
             }
         }
         else {
@@ -46,9 +57,18 @@ const App = () => {
                 .addItem(newObject)
                 .then(newPerson => {
                     setPersons([...persons, newPerson]);
+                    setNotificationMessage(`Added ${newPerson.name}`);
+                    setNotificationType("success");
+                    setTimeout(() => {
+                        setNotificationMessage(null)
+                    }, 5000);
                     setNewName("");
                     setNewNumber("");
                 })
+                .catch(error => {
+                    setNotificationMessage("An error occured.");
+                    setNotificationType("error");
+                });
         }
     }
 
@@ -69,15 +89,16 @@ const App = () => {
 
   return (
     <div>
-          <h2>Phonebook</h2>
-          <Filter onChange={handleFiltering}/>
-          <h3>Add a new:</h3>
-          <PersonForm
-              onChangeName={handleChangeName}
-              onChangeNumber={handleChangeNumber}
-              onClick={addName} />
-          <h2>Numbers</h2>
-          <Persons list={persons} filter={newFilterName}/>
+        <h2>Phonebook</h2>
+        <Notification type={notificationType} message={notificationMessage} />
+        <Filter onChange={handleFiltering}/>
+        <h3>Add a new:</h3>
+        <PersonForm
+            onChangeName={handleChangeName}
+            onChangeNumber={handleChangeNumber}
+            onClick={addName} />
+        <h2>Numbers</h2>
+        <Persons list={persons} filter={newFilterName}/>
     </div>
   )
 }
