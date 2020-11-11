@@ -22,7 +22,7 @@ const updateItem = (id, newData) => {
 
 const deleteItem = (id) => {
     return axios
-        .delete(`${baseUrl}/${id}`);
+        .delete(`${baseUrl}/${id}`)
 }
 
 export default { getItems, addItem, updateItem, deleteItem };
