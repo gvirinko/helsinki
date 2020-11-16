@@ -2,6 +2,12 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
+const morgan = require('morgan');
+morgan.token('body', function getBody(req) {
+    return JSON.stringify(req.body);
+});
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+
 let persons = [
     {
         "name": "Arto Hellas",
