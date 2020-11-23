@@ -1,0 +1,2 @@
+GET https://guarded-hamlet-73810.herokuapp.com/api/persons
+Content-Type: application/json

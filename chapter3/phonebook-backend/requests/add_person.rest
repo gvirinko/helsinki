@@ -1,0 +1,8 @@
+POST https://guarded-hamlet-73810.herokuapp.com/api/persons
+# POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Sara",
+    "number": "090"
+}
