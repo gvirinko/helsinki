@@ -28,6 +28,17 @@ const App = () => {
 
     const addName = (event) => {
         event.preventDefault();
+        // Checking the length constrains
+        if (newName.length < 3) {
+            setNotificationMessage("Name should have more than three characters.");
+            setNotificationType("error");
+            return;
+        }
+            if (newNumber.length < 8) {
+            setNotificationMessage("Number should have more than eight characters.");
+            setNotificationType("error");
+            return;
+        }
         // Checking if the name and number already exist in the phonebook
         if (persons.find(item => item.name === newName && item.number === newNumber) && newName !== "") {
             window.alert(`${newName} is already added to the phonebook`);
@@ -66,6 +77,7 @@ const App = () => {
                     setNewNumber("");
                 })
                 .catch(error => {
+                    console.log("error shmerror");
                     setNotificationMessage("An error occured.");
                     setNotificationType("error");
                 });

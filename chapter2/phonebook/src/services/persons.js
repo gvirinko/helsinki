@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/persons';
+const baseUrl = '/api/persons';
 
 const getItems = () => {
     return axios
@@ -13,7 +13,6 @@ const addItem = (newItem) => {
         .post(baseUrl, newItem)
         .then(response => response.data);
 }
-
 const updateItem = (id, newData) => {
     return axios
         .put((`${baseUrl}/${id}`), newData)
