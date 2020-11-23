@@ -32,11 +32,21 @@ const App = () => {
         if (newName.length < 3) {
             setNotificationMessage("Name should have more than three characters.");
             setNotificationType("error");
+            setTimeout(() => {
+                setNotificationMessage(null)
+            }, 5000);
+            setNewName("");
+            setNewNumber("");
             return;
         }
-            if (newNumber.length < 8) {
+        if (newNumber.length < 8) {
             setNotificationMessage("Number should have more than eight characters.");
             setNotificationType("error");
+            setTimeout(() => {
+                setNotificationMessage(null)
+            }, 5000);
+            setNewName("");
+            setNewNumber("");
             return;
         }
         // Checking if the name and number already exist in the phonebook
@@ -99,20 +109,23 @@ const App = () => {
         setFilterName(event.target.value);
     }
 
-  return (
-    <div>
-        <h2>Phonebook</h2>
-        <Notification type={notificationType} message={notificationMessage} />
-        <Filter onChange={handleFiltering}/>
-        <h3>Add a new:</h3>
-        <PersonForm
-            onChangeName={handleChangeName}
-            onChangeNumber={handleChangeNumber}
-            onClick={addName} />
-        <h2>Numbers</h2>
-        <Persons list={persons} filter={newFilterName}/>
-    </div>
-  )
+    return (
+        <div>
+            <h2>Phonebook</h2>
+            <Notification type={notificationType} message={notificationMessage} />
+            <Filter onChange={handleFiltering} />
+            <h3>Add a new entry:</h3>
+            <PersonForm
+                onChangeName={handleChangeName}
+                onChangeNumber={handleChangeNumber}
+                onClick={addName}
+                name={newName}
+                number={newNumber}
+            />
+            <h2>Numbers</h2>
+            <Persons list={persons} filter={newFilterName} />
+        </div>
+    )
 }
 
 export default App
