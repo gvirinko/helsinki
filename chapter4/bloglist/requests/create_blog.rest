@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-        "title": "This is it",
-    "author": "Lady Gaga",
-    "url": "www.gaga.com",
-    "likes": 8
+        "title": "Here I Am",
+    "author": "Bon Jovi",
+    "url": "www.jovi.com",
+    "likes": 6
 }
