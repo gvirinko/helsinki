@@ -52,11 +52,6 @@ describe('favourite blog', () => {
     })
 })
 
-
-
-
-
-
 // List of blogs for testing purposes
 const blogs = [
     {
