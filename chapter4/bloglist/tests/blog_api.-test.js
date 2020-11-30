@@ -71,36 +71,36 @@ test('there is a unique property id in each blog', async () => {
     expect(blogs.length).toBe(testArray.length)
 })
 
-// test('blog without title AND without url will NOT be added', async () => {
-//     const testBlog = {
-//         // title: "Shmorat",
-//         author: "Borat",
-//         likes: 1
-//     }
-// try {
-// await api
-//     .post('/api/blogs')
-//     .send(testBlog)
-//     .expect(400)
-// } catch (error) {
-//     console.log(error);
-// }
-// })
+test('blog without title AND without url will NOT be added', async () => {
+    const testBlog = {
+        // title: "Shmorat",
+        author: "Borat",
+        likes: 1
+    }
+    try {
+        await api
+            .post('/api/blogs')
+            .send(testBlog)
+            .expect(400)
+    } catch (error) {
+        console.log(error);
+    }
+})
 
-// test.only('update the property likes', async () => {
-//     // const newLikes = 999
-//     const blogsAtStart = await helper.blogsInDb()
-//     const blogToUpdate = blogsAtStart[0]
-//     await api
-//         .patch(`/api/blogs/${blogToUpdate.id}`, { "likes": 555 })
-//         .expect(200)
+test.only('update the property likes', async () => {
+    // const newLikes = 999
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+    await api
+        .patch(`/api/blogs/${blogToUpdate.id}`, { "likes": 555 })
+        .expect(200)
 
-//     const blogsAtEnd = await helper.blogsInDb()
-//     console.log(blogsAtEnd);
-//     const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
-//     console.log(updatedBlog.likes);
-//     // expect(updatedBlog.likes).toEqual(newLikes)
-// })
+    const blogsAtEnd = await helper.blogsInDb()
+    console.log(blogsAtEnd);
+    const updatedBlog = blogsAtEnd.find(blog => blog.id === blogToUpdate.id)
+    console.log(updatedBlog.likes);
+    // expect(updatedBlog.likes).toEqual(newLikes)
+})
 
 test('delete a blog', async () => {
     const blogsAtStart = await helper.blogsInDb()
