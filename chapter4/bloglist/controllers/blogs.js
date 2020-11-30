@@ -8,26 +8,17 @@ blogsRouter.get('/', async (request, response) => {
     response.json(blogs)
 })
 
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        return authorization.substring(7)
-    }
-    return null
-}
-
 blogsRouter.post('/', async (request, response) => {
     const body = request.body
-    const token = getTokenFrom(request)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-    if (!token || !decodedToken.id) {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    console.log(decodedToken)
+    if (!request.token || !decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
     const user = await User.findById(decodedToken.id)
 
     const blog = new Blog({
         title: body.title,
-        // author: body.author,
         url: body.url,
         likes: body.likes || 0,
         author: user._id
@@ -39,9 +30,18 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-    await Blog.findByIdAndRemove(request.params.id)
-    response.status(204).end()
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!decodedToken) {
+        return response.status(401).json({ error: 'You have no rights to delete this blog (token invalid)' })
+    }
+    const blog = await Blog.findById(request.params.id)
+    if (blog.author.toString() === decodedToken.id.toString()) {
+        await Blog.deleteOne(blog)
+        response.status(204).end()
 
+    } else {
+        return response.status(401).json({ error: 'You have no rights to delete this blog' })
+    }
 })
 
 // blogsRouter.patch('/:id', async (request, response, next) => {

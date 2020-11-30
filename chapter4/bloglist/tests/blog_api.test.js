@@ -30,12 +30,13 @@ test('correct number of blogs, in json', async () => {
 test('a valid blog can be added', async () => {
     const testBlog = {
         title: "What is Love",
-        author: "Demi Moore",
+        // author: "Demi Moore",
         url: "www.demi.com",
         likes: 20
     }
     await api
         .post('/api/blogs')
+        // .set('Authorisation', 'bearer 123')
         .send(testBlog)
         .expect(200)
         .expect('Content-Type', /application\/json/)
@@ -50,7 +51,7 @@ test('a valid blog can be added', async () => {
 test('a blog without property likes can be added with value 0', async () => {
     const testBlog = {
         title: "What is Love",
-        author: "Demi Moore",
+        // author: "Demi Moore",
         url: "www.demi.com",
     }
     await api
@@ -73,7 +74,6 @@ test('there is a unique property id in each blog', async () => {
 
 test('blog without title AND without url will NOT be added', async () => {
     const testBlog = {
-        // title: "Shmorat",
         author: "Borat",
         likes: 1
     }
@@ -87,7 +87,7 @@ test('blog without title AND without url will NOT be added', async () => {
     }
 })
 
-test.only('update the property likes', async () => {
+test('update the property likes', async () => {
     // const newLikes = 999
     const blogsAtStart = await helper.blogsInDb()
     const blogToUpdate = blogsAtStart[0]
