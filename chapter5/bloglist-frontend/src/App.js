@@ -13,7 +13,7 @@ const App = () => {
   const [url, setUrl] = useState('')
 
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState({ text: null, type: null })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -35,14 +35,18 @@ const App = () => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('LoggedBloglistAppUser', JSON.stringify(user))
       setUser(user)
-      setUsername('')
-      setPassword('')
+      setMessage({ text: 'Logged in successfully' })
+      setTimeout(() => {
+        setMessage({ text: null, type: null })
+      }, 5000)
     }
     catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setMessage({ text: 'Wrong username or password.', type: "error" })
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage({ text: null, type: null })
       }, 5000)
+      setUsername('')
+      setPassword('')
     }
   }
 
@@ -57,16 +61,19 @@ const App = () => {
     try {
       blogService.setToken(user.token)
       const newBlog = await blogService.create({ title, author, url })
-      console.log(newBlog);
       setBlogs([...blogs, newBlog])
+      setMessage({ text: `A new blog "${newBlog.title}" by ${newBlog.author} has been added.` })
+      setTimeout(() => {
+        setMessage({ text: null, type: null })
+      }, 5000)
       setTitle('')
       setAuthor('')
       setUrl('')
     }
     catch (exception) {
-      setErrorMessage('Something wrong')
+      setMessage({ text: 'The blog cannot be added.', type: 'error' })
       setTimeout(() => {
-        setErrorMessage(null)
+        setMessage({ text: null, type: null })
       }, 5000)
     }
   }
@@ -74,7 +81,7 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2> Please log in to application:</h2>
-      <Notification message={errorMessage} />
+      {/* <Notification message={message} /> */}
       <div>
         username
            <input
@@ -99,7 +106,7 @@ const App = () => {
   const addBlogForm = () => (
     <form onSubmit={handleAddBlog}>
       <h2> Please add new blog:</h2>
-      <Notification message={errorMessage} />
+      {/* <Notification message={message} /> */}
       <div>
         Title:
            <input
@@ -145,8 +152,11 @@ const App = () => {
 
   return (
     <div>
-      {user === null ? loginForm() : blogsList()}
-      {addBlogForm()}
+      <Notification message={message} />
+      {user === null && loginForm()}
+      { user !== null && blogsList()}
+      { user !== null && addBlogForm()}
+
     </div>
   )
 }
