@@ -9,6 +9,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
   const [user, setUser] = useState(null)
@@ -55,10 +56,11 @@ const App = () => {
     event.preventDefault()
     try {
       blogService.setToken(user.token)
-      const newBlog = await blogService.create({ title, url })
+      const newBlog = await blogService.create({ title, author, url })
       console.log(newBlog);
       setBlogs([...blogs, newBlog])
       setTitle('')
+      setAuthor('')
       setUrl('')
     }
     catch (exception) {
@@ -99,7 +101,7 @@ const App = () => {
       <h2> Please add new blog:</h2>
       <Notification message={errorMessage} />
       <div>
-        title
+        Title:
            <input
           type="text"
           value={title}
@@ -108,7 +110,16 @@ const App = () => {
         />
       </div>
       <div>
-        url
+        Author:
+            <input
+          type="text" //
+          value={author}
+          name="Author"
+          onChange={({ target }) => setAuthor(target.value)}
+        />
+      </div>
+      <div>
+        Url:
             <input
           type="text" // url?
           value={url}
