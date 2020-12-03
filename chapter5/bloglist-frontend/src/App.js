@@ -8,6 +8,9 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
+
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -48,29 +51,73 @@ const App = () => {
     setUser(null)
   }
 
-  const loginForm = () => (<form onSubmit={handleLogin}>
-    <h2> Please log in to application:</h2>
-    <Notification message={errorMessage} />
-    <div>
-      username
+  const handleAddBlog = async (event) => {
+    event.preventDefault()
+    try {
+      blogService.setToken(user.token)
+      const newBlog = await blogService.create({ title, url })
+      console.log(newBlog);
+      setBlogs([...blogs, newBlog])
+      setTitle('')
+      setUrl('')
+    }
+    catch (exception) {
+      setErrorMessage('Something wrong')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const loginForm = () => (
+    <form onSubmit={handleLogin}>
+      <h2> Please log in to application:</h2>
+      <Notification message={errorMessage} />
+      <div>
+        username
            <input
-        type="text"
-        value={username}
-        name="Username"
-        onChange={({ target }) => setUsername(target.value)}
-      />
-    </div>
-    <div>
-      password
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </div>
+      <div>
+        password
             <input
-        type="password"
-        value={password}
-        name="Password"
-        onChange={({ target }) => setPassword(target.value)}
-      />
-    </div>
-    <button type="submit">login</button>
-  </form>)
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </div>
+      <button type="submit">login</button>
+    </form>)
+
+  const addBlogForm = () => (
+    <form onSubmit={handleAddBlog}>
+      <h2> Please add new blog:</h2>
+      <Notification message={errorMessage} />
+      <div>
+        title
+           <input
+          type="text"
+          value={title}
+          name="Title"
+          onChange={({ target }) => setTitle(target.value)}
+        />
+      </div>
+      <div>
+        url
+            <input
+          type="text" // url?
+          value={url}
+          name="Url"
+          onChange={({ target }) => setUrl(target.value)}
+        />
+      </div>
+      <button type="submit">Create</button>
+    </form>)
 
   const blogsList = () => (
     <div>
@@ -88,6 +135,7 @@ const App = () => {
   return (
     <div>
       {user === null ? loginForm() : blogsList()}
+      {addBlogForm()}
     </div>
   )
 }
