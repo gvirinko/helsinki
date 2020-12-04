@@ -10,9 +10,6 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState({ text: null, type: null })
 
@@ -57,19 +54,15 @@ const App = () => {
     setUser(null)
   }
 
-  const handleAddBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blogObject) => {
     try {
       blogService.setToken(user.token)
-      const newBlog = await blogService.create({ title, author, url })
+      const newBlog = await blogService.create(blogObject)
       setBlogs([...blogs, newBlog])
-      setMessage({ text: `A new blog "${newBlog.title}" by ${newBlog.author} has been added.` })
+      setMessage({ text: `A new blog has been added.` })
       setTimeout(() => {
         setMessage({ text: null, type: null })
       }, 5000)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
     }
     catch (exception) {
       setMessage({ text: 'The blog cannot be added.', type: 'error' })
@@ -82,7 +75,6 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <h2> Please log in to application:</h2>
-      {/* <Notification message={message} /> */}
       <div>
         username
            <input
@@ -107,13 +99,7 @@ const App = () => {
   const blogForm = () => {
     return (
       <Togglable buttonLabel='New Blog'>
-        <BlogForm title={title}
-          author={author}
-          url={url}
-          handleSubmit={handleAddBlog}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleUrlChange={({ target }) => setUrl(target.value)}
+        <BlogForm createBlog={addBlog}
         />
       </Togglable>
     )
