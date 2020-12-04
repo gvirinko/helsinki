@@ -112,7 +112,9 @@ const App = () => {
       <h2>Blogs:</h2>
       {
         blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+          <div>
+            <Blog key={blog.id} blog={blog} userName={user.name} />
+          </div>
         )
       }
     </div>
