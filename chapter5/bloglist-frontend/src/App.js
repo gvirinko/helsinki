@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import loginService from './services/login'
 import blogService from './services/blogs'
 
@@ -11,7 +13,6 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState({ text: null, type: null })
 
@@ -103,39 +104,20 @@ const App = () => {
       <button type="submit">login</button>
     </form>)
 
-  const addBlogForm = () => (
-    <form onSubmit={handleAddBlog}>
-      <h2> Please add new blog:</h2>
-      {/* <Notification message={message} /> */}
-      <div>
-        Title:
-           <input
-          type="text"
-          value={title}
-          name="Title"
-          onChange={({ target }) => setTitle(target.value)}
+  const blogForm = () => {
+    return (
+      <Togglable buttonLabel='New Blog'>
+        <BlogForm title={title}
+          author={author}
+          url={url}
+          handleSubmit={handleAddBlog}
+          handleTitleChange={({ target }) => setTitle(target.value)}
+          handleAuthorChange={({ target }) => setAuthor(target.value)}
+          handleUrlChange={({ target }) => setUrl(target.value)}
         />
-      </div>
-      <div>
-        Author:
-            <input
-          type="text" //
-          value={author}
-          name="Author"
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        Url:
-            <input
-          type="text" // url?
-          value={url}
-          name="Url"
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type="submit">Create</button>
-    </form>)
+      </Togglable>
+    )
+  }
 
   const blogsList = () => (
     <div>
@@ -155,7 +137,7 @@ const App = () => {
       <Notification message={message} />
       {user === null && loginForm()}
       { user !== null && blogsList()}
-      { user !== null && addBlogForm()}
+      { user !== null && blogForm()}
 
     </div>
   )
