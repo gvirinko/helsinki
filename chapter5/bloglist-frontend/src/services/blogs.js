@@ -20,9 +20,15 @@ const create = async newObject => {
   return response.data
 }
 
+const changeBlog = async newObject => {
+  const url = `${baseUrl}/${newObject.id}`
+  const response = await axios.put(url, newObject)
+  return response.data
+}
+
 // const findById = async (id) => {
 //   const response = await axios.get(`${baseUrl}/:${id}`)
 //   return response.data
 // }
 
-export default { getAll, setToken, create }
+export default { getAll, setToken, create, changeBlog }
