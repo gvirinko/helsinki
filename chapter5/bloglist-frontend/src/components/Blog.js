@@ -7,7 +7,7 @@ const Blog = ({ blog, user }) => {
 
   useEffect(() => {
     setUpdBlog(blog)
-  }, [blog])
+  }, [])
 
   const blogStyle = {
     paddingTop: 10,
@@ -16,6 +16,7 @@ const Blog = ({ blog, user }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
   const addLike = async (event) => {
     event.preventDefault()
     const blogObject = {
@@ -23,27 +24,38 @@ const Blog = ({ blog, user }) => {
       title: blog.title,
       author: blog.author,
       url: blog.url,
-      userId: user._id,
+      userId: blog.user.id,
       likes: updBlog.likes + 1
     }
     const updatedBlog = await blogService.changeBlog(blogObject)
     setUpdBlog(updatedBlog)
   }
 
+  const deleteBlog = async (event) => {
+    event.preventDefault()
+    blogService.setToken(user.token)
+    await blogService.deleteBlog(blog.id)
+    setUpdBlog(null)
+  }
+
   return (
-    <div style={blogStyle}>
-      {blog.title} - {blog.author}
-      <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
-      {visible &&
-        <div>
-          <p>{blog.url}</p>
-          <p>Likes: <span>{updBlog.likes}</span><button onClick={addLike}>Like</button></p>
-          <p>{user.name}</p>
-        </div>
-      }
-    </div>
+    updBlog && (
+      <div style={blogStyle}>
+        {updBlog.title} - {updBlog.author}
+        <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
+        {visible &&
+          <div>
+            <p>{updBlog.url}</p>
+            <p>Likes: <span>{updBlog.likes}</span><button onClick={addLike}>Like</button></p>
+            <p>{blog.user.name}</p>
+            <button onClick={deleteBlog}
+              style={{ display: blog.user.username === user.username ? '' : 'none' }}
+            >Delete</button>
+          </div>
+        }
+      </div >
+    )
   )
 }
-
 
 export default Blog

@@ -104,7 +104,6 @@ const App = () => {
       </Togglable>
     )
   }
-
   const blogsList = () => (
     <div>
       <h4>{user.name} logged in.</h4>
@@ -112,8 +111,8 @@ const App = () => {
       <h2>Blogs:</h2>
       {
         blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <div>
-            <Blog key={blog.id} blog={blog} user={user} />
+          <div key={blog.id}>
+            <Blog blog={blog} user={user} />
           </div>
         )
       }
@@ -126,7 +125,6 @@ const App = () => {
       {user === null && loginForm()}
       { user !== null && blogsList()}
       { user !== null && blogForm()}
-
     </div>
   )
 }
