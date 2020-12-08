@@ -39,7 +39,7 @@ const App = () => {
       }, 5000)
     }
     catch (exception) {
-      setMessage({ text: 'Wrong username or password.', type: "error" })
+      setMessage({ text: 'Wrong username or password.', type: 'error' })
       setTimeout(() => {
         setMessage({ text: null, type: null })
       }, 5000)
@@ -59,7 +59,7 @@ const App = () => {
       blogService.setToken(user.token)
       const newBlog = await blogService.create(blogObject)
       setBlogs([...blogs, newBlog])
-      setMessage({ text: `A new blog has been added.` })
+      setMessage({ text: 'A new blog has been added.' })
       setTimeout(() => {
         setMessage({ text: null, type: null })
       }, 5000)
@@ -77,7 +77,7 @@ const App = () => {
       <h2> Please log in to application:</h2>
       <div>
         username
-           <input
+        <input
           type="text"
           value={username}
           name="Username"
@@ -86,7 +86,7 @@ const App = () => {
       </div>
       <div>
         password
-            <input
+        <input
           type="password"
           value={password}
           name="Password"
