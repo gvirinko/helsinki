@@ -47,10 +47,10 @@ const Blog = ({ blog, user }) => {
         {visible &&
           <div>
             <p>{updBlog.url}</p>
-            <p>Likes: <span>{updBlog.likes}</span><button onClick={addLike}>Like</button></p>
+            <p>Likes: <span className='likesNumber'>{updBlog.likes}</span><button onClick={addLike}>Like</button></p>
             <p>{blog.user.name}</p>
             <button onClick={deleteBlog}
-              style={{ display: updBlog.user.username === user.username ? '' : 'none' }}
+              style={{ display: blog.user.username === user.username ? '' : 'none' }}
             >Delete</button>
           </div>
         }
