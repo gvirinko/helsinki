@@ -45,9 +45,11 @@ const Blog = ({ blog, user }) => {
         {updBlog.title} - {updBlog.author}
         <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
         {visible &&
-          <div>
+          <div className='additionalInfo'>
             <p>{updBlog.url}</p>
-            <p>Likes: <span className='likesNumber'>{updBlog.likes}</span><button onClick={addLike}>Like</button></p>
+            <p>Likes: <span className='likesNumber'>{updBlog.likes}</span>
+              <button onClick={addLike}>Like</button>
+            </p>
             <p>{blog.user.name}</p>
             <button onClick={deleteBlog}
               style={{ display: blog.user.username === user.username ? '' : 'none' }}
