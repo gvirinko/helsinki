@@ -43,12 +43,12 @@ const Blog = ({ blog, user }) => {
     updBlog && (
       <div style={blogStyle}>
         {updBlog.title} - {updBlog.author}
-        <button onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
+        <button className='view-hide-button' onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
         {visible &&
           <div className='additionalInfo'>
             <p>{updBlog.url}</p>
             <p>Likes: <span className='likesNumber'>{updBlog.likes}</span>
-              <button onClick={addLike}>Like</button>
+              <button className='like-button' onClick={addLike}>Like</button>
             </p>
             <p>{blog.user.name}</p>
             <button onClick={deleteBlog}

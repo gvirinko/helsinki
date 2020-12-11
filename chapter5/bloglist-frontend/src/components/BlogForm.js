@@ -25,7 +25,7 @@ const BlogForm = ({ createBlog
 
   return (
     <div className='formDiv'>
-      <h2> Please add new blog:</h2>
+      <h2> Please add a new blog:</h2>
       <form onSubmit={addBlog}>
         <div>
           Title:
@@ -57,7 +57,7 @@ const BlogForm = ({ createBlog
             onChange={handleUrlChange}
           />
         </div>
-        <button type="submit">Create</button>
+        <button className='create-blog' type="submit">Create</button>
       </form>
     </div>)
 }
