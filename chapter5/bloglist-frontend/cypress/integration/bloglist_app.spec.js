@@ -42,8 +42,8 @@ describe('Blog app', function () {
   describe.only('When logged in', function () {
     beforeEach(function () {
       cy.addNewUser({ name: 'Mike Tyson', username: 'mike', password: 'mike' })
-      cy.login({ name: 'Mike Tyson', username: 'mike', password: 'mike' })
-      cy.contains('logged in')
+      cy.login({ username: 'mike', password: 'mike' })
+      cy.contains('Mike Tyson logged in')
     })
 
     it('A blog can be created', function () {
@@ -57,7 +57,26 @@ describe('Blog app', function () {
       cy.contains('Spaghetti - Jamie Oliver')
     })
 
-    it.only('User can like a blog', function () {
+    it('A blog can be deleted', function () {
+      cy.contains('New Blog').click()
+      cy.contains('Please add a new blog')
+      cy.get('#title').type('Spaghetti')
+      cy.get('#author').type('Jamie Oliver')
+      cy.get('#url').type('oliver.com')
+      cy.get('.create-blog').click()
+      cy.contains('A new blog has been added')
+      cy.contains('Spaghetti - Jamie Oliver')
+
+      cy.visit('http://localhost:3000')
+      cy.contains('Spaghetti')
+        .parent()
+        .find('.view-hide-button')
+        .click()
+      cy.get('.delete-button').click()
+      cy.contains('Spaghetti').should('not.exist')
+    })
+
+    it('User can like a blog', function () {
       cy.contains('New Blog').click()
       cy.get('#title').type('Spaghetti')
       cy.get('#author').type('Jamie Oliver')
@@ -76,7 +95,51 @@ describe('Blog app', function () {
         .parent()
         .get('.likesNumber')
         .contains('1')
+
+      cy.contains('Spaghetti')
+        .parent()
+        .find('.view-hide-button')
+        .click()
     })
+
+    it('Blogs are ordered according to likes', function () {
+      // Creating two blogs
+      cy.contains('New Blog').click()
+      cy.contains('Please add a new blog')
+      cy.get('#title').type('Spaghetti')
+      cy.get('#author').type('Jamie Oliver')
+      cy.get('#url').type('oliver.com')
+      cy.get('.create-blog').click()
+      cy.contains('A new blog has been added')
+      cy.contains('Spaghetti - Jamie Oliver')
+
+      cy.visit('http://localhost:3000')
+      cy.contains('New Blog').click()
+      cy.contains('Please add a new blog')
+      cy.get('#title').type('Pasta')
+      cy.get('#author').type('Jamie Oliver')
+      cy.get('#url').type('oliver.com')
+      cy.get('.create-blog').click()
+      cy.contains('A new blog has been added')
+      cy.contains('Pasta - Jamie Oliver')
+      cy.contains('Pasta')
+      cy.visit('http://localhost:3000')
+
+      // Adding 'like' to the second blog so that it gets sorted and moved up
+      cy.contains('Pasta')
+        .parent()
+        .find('.view-hide-button')
+        .click()
+        .parent()
+        .find('.like-button')
+        .click()
+        .click()
+      cy.visit('http://localhost:3000')
+      // Checking that second blog moved up to the first position
+      cy.get('.blog').first().contains('Pasta')
+
+    })
+
   })
 
 })
