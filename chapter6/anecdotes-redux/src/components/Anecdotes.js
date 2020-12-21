@@ -18,7 +18,10 @@ const Anecdote = ({ anecdote, handleClick }) => {
 }
 
 const Anecdotes = () => {
+  const filterQuery = useSelector(state => state.filter)
   const anecdotes = useSelector(state => state.anecdotes)
+    .filter(item => item.content.toLowerCase().includes(filterQuery.toLowerCase()))
+
   const dispatch = useDispatch()
 
   const handleClick = (anecdote) => {
