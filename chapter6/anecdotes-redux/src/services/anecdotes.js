@@ -5,6 +5,7 @@ const baseUrl = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
+  console.log(response.data)
   return response.data
 }
 
@@ -14,4 +15,9 @@ const createNew = async (content) => {
   return response.data
 }
 
-export default {getAll, createNew}
+const addVote = async (id, votes) => {
+  const response = await axios.patch(`${baseUrl}/${id}`, {votes: votes + 1})
+  return response.data
+}
+
+export default {getAll, createNew, addVote}

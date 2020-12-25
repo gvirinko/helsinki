@@ -25,7 +25,7 @@ const Anecdotes = () => {
   const dispatch = useDispatch()
 
   const handleClick = (anecdote) => {
-    dispatch(vote(anecdote.id))
+    dispatch(vote(anecdote.id, anecdote.votes))
     dispatch(setNotification(`You have just voted for: '${anecdote.content}'`))
     setTimeout(()=> {dispatch(removeNotification())}, 5000)
   }
