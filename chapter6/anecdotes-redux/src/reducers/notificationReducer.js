@@ -1,4 +1,6 @@
 const notificationAtStart = "Here is my start notification."
+let timeoutId // to solve a bug, when removing first notification also removes second one
+
 
 const notificationReducer = (state = notificationAtStart, action) => {
   switch (action.type) {
@@ -12,12 +14,13 @@ const notificationReducer = (state = notificationAtStart, action) => {
 }
 
 export const setNotification = (notification, delay) => {
+  clearTimeout(timeoutId)
   return async dispatch => {
     dispatch({
       type: 'SET_NOTIFICATION',
       notification
     })
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       dispatch({
         type: 'REMOVE_NOTIFICATION'
       }) }, delay * 1000)
