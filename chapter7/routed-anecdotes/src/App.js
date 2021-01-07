@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Link, Switch, Route, useRouteMatch} from 'react-router-dom'
+import {Link, Switch, Route, useRouteMatch, Redirect} from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -96,7 +96,14 @@ const Anecdote = ({ anecdote }) => {
   </div>
 }
 
+const Notification = ({text}) => {
+  return <div>
+    {text}
+  </div>
+}
+
 const App = () => {
+  const [proofAdded, setProofAdded] = useState(false)
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -119,6 +126,9 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    setProofAdded(true)
+    setNotification(`A new anecdote '${anecdote.content}' created!`)
+    setTimeout(() => setNotification(''), 10000)
   }
 
   const anecdoteById = (id) =>
@@ -135,8 +145,6 @@ const App = () => {
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
   const match = useRouteMatch('/anecdotes/:id')
-  // console.log(match.params.id)
-  // console.log(anecdotes);
   const matchedAnecdote = match
     ? anecdotes.find(anecdote => anecdote.id === match.params.id)
     : null
@@ -144,13 +152,15 @@ const App = () => {
   return (
     <div>
         <h1>Software anecdotes</h1>
-        <Menu />
+      <Menu />
+      <Notification text={notification}/>
         <Switch>
           <Route path='/anecdotes/:id'>
             <Anecdote anecdote={matchedAnecdote}/>
           </Route>
           <Route path='/create'>
-            <CreateNew addNew={addNew} />
+          <CreateNew addNew={addNew} />
+          {proofAdded ? <Redirect to='/' /> : null}
           </Route>
           <Route path='/about'>
             <About />
