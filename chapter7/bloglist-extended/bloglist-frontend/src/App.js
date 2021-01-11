@@ -14,8 +14,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  // const [message, setMessage] = useState({ text: null, type: null })
-  const notification = useSelector(state => state)
+  const notification = useSelector(state => state.notification)
+  const error = 'error'
+  // console.log('notification')
+
+  // console.log(notification)
 
   const dispatch = useDispatch()
 
@@ -33,8 +36,12 @@ const App = () => {
     }
   }, [])
 
-  const dispatchNotification = (text, isError) => {
-    dispatch(notificationSet({ text: text, error: isError || false  }))
+  const dispatchNotification = (text, error) => {
+    if (error) {
+      dispatch(notificationSet(text, true))
+    } else {
+      dispatch(notificationSet(text, false))
+    }
   }
 
   const removeNotification = (delay) => {
@@ -53,7 +60,7 @@ const App = () => {
       removeNotification(5)
     }
     catch (exception) {
-      dispatchNotification('Wrong username or password.', true)
+      dispatchNotification('Wrong username or password.', error)
       removeNotification(5)
       setUsername('')
       setPassword('')
@@ -75,7 +82,7 @@ const App = () => {
       removeNotification(5)
     }
     catch (exception) {
-      dispatchNotification('The blog cannot be added.', true)
+      dispatchNotification('The blog cannot be added.', error)
       removeNotification(5)
     }
   }
