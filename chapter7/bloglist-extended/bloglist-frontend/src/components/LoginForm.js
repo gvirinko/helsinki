@@ -8,38 +8,17 @@ import { loggingIn } from '../reducers/loginReducer'
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const error = 'error'
   const dispatch = useDispatch()
-  // const dispatch2 = useDispatch()
-
-  const dispatchNotification = (text, error) => {
-    if (error) {
-      dispatch(notificationSet(text, true))
-    } else {
-      dispatch(notificationSet(text, false))
-    }
-  }
-
-  const removeNotification = (delay) => {
-    setTimeout(() => {
-      dispatchNotification('')
-    }, delay * 1000)
-  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({ username, password })
-      // console.log(user)
-      // window.localStorage.setItem('LoggedBloglistAppUser', JSON.stringify(user))
-      // setUser(user)
       dispatch(loggingIn(user))
-      dispatchNotification('Logged in successfully')
-      removeNotification(5)
+      dispatch(notificationSet('Logged in successfully', false, 5))
     }
     catch (exception) {
-      dispatchNotification('Wrong username or password.', error)
-      removeNotification(5)
+      dispatch(notificationSet('Wrong username or password.', true, 5))
       setUsername('')
       setPassword('')
     }

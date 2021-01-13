@@ -21,4 +21,11 @@ export const initializeBlogs = () => {
   }
 }
 
+export const addNewBlog = (blog) => {
+  return {
+    type: 'NEW_BLOG',
+    data: blog
+  }
+}
+
 export default blogReducer
