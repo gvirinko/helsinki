@@ -16,6 +16,8 @@ import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
 import { loggingOut } from './reducers/loginReducer'
 
+import './App.css'
+
 
 const App = () => {
   const notification = useSelector(state => state.notification)
@@ -39,18 +41,19 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <Link style={padding} to='/'>home</Link>
-        <Link style={padding} to="/users">users</Link>
-      </div>
+      <ul className='nav-panel'>
+        <li className='nav-panel_item'><Link style={padding} to='/'>blogs</Link></li>
+        <li className='nav-panel_item'><Link style={padding} to="/users">users</Link></li>
+        {user !== null &&
+          <div className='nav-panel_login'>
+            <li className='nav-panel_item'><p> {user.name} logged in.</p></li>
+            <li className='nav-panel_item'><button type="submit" onClick={handleLogout}>Logout</button></li>
+          </div>
+        }
+
+      </ul>
       <Notification notification={notification} />
       {user === null && <LoginForm />}
-      {user !== null &&
-        (<div>
-          <h4>{user.name} logged in.</h4>
-          <button type="submit" onClick={handleLogout}>Logout</button>
-        </div>)
-      }
       <Switch>
         <Route path='/users/:id'>
           <IndUserView />
@@ -63,8 +66,12 @@ const App = () => {
         </Route>
         <Route path='/'>
           <div>
-            {user !== null && <BlogList />}
-            {user !== null && <NewBlog />}
+            {user !== null &&
+              <div>
+                <BlogList />
+                <NewBlog />
+              </div>
+            }
           </div>
         </Route>
       </Switch>

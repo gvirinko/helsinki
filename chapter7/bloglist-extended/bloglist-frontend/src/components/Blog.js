@@ -17,7 +17,7 @@ const Blog = () => {
   const user = useSelector(state => state.login)
   const dispatch = useDispatch()
 
-  if (!blog) {
+  if (!blog || ! user) {
     return null
   }
 
@@ -30,8 +30,6 @@ const Blog = () => {
   }
 
   const addLike = async (event) => {
-    console.log('blog user')
-    console.log(blog.user)
     event.preventDefault()
     const blogObject = {
       id: blog.id,
