@@ -8,10 +8,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
+import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import UsersView from './components/UsersView'
 import IndUserView from './components/IndUserView'
 import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
 import { loggingOut } from './reducers/loginReducer'
 
 
@@ -31,6 +33,8 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
+
   }, [])
 
   return (
@@ -53,6 +57,9 @@ const App = () => {
         </Route>
         <Route path='/users'>
           <UsersView />
+        </Route>
+        <Route path='/blogs/:id'>
+          <Blog />
         </Route>
         <Route path='/'>
           <div>

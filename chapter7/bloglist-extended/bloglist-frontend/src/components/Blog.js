@@ -1,14 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
+import {
+  updateBlog,
+  deleteBlog
+} from '../reducers/blogReducer'
 
-const Blog = ({ blog, user }) => {
-  const [visible, setVisible] = useState(false)
-  const [updBlog, setUpdBlog] = useState(blog)
 
-  useEffect(() => {
-    setUpdBlog(blog)
-  }, [])
+const Blog = () => {
+  const id = useParams().id
+  // const users = useSelector(state => state.users)
+  const blogs = useSelector(state => state.blogs)
+  const blog = blogs.find(blog => blog.id === id)
+  // const userWhoAdded = users.find(user => user.id === blog.user)
+  const user = useSelector(state => state.login)
+  const dispatch = useDispatch()
+
+  if (!blog) {
+    return null
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,6 +30,8 @@ const Blog = ({ blog, user }) => {
   }
 
   const addLike = async (event) => {
+    console.log('blog user')
+    console.log(blog.user)
     event.preventDefault()
     const blogObject = {
       id: blog.id,
@@ -26,44 +39,43 @@ const Blog = ({ blog, user }) => {
       author: blog.author,
       url: blog.url,
       userId: blog.user.id,
-      likes: updBlog.likes + 1
+      likes: blog.likes + 1
     }
-    const updatedBlog = await blogService.changeBlog(blogObject)
-    setUpdBlog(updatedBlog)
+    await blogService.changeBlog(blogObject)
+    dispatch(updateBlog(blogObject))
   }
 
-  const deleteBlog = async (event) => {
+  const handleDeleteBlog = async (event) => {
     event.preventDefault()
     blogService.setToken(user.token)
     await blogService.deleteBlog(blog.id)
-    setUpdBlog(null)
+    dispatch(deleteBlog(blog))
   }
 
   return (
-    updBlog && (
-      <div style={blogStyle} className="blog">
-        {updBlog.title} - {updBlog.author}
-        <button className='view-hide-button' onClick={() => setVisible(!visible)}>{visible ? 'Hide' : 'View'}</button>
-        {visible &&
-          <div className='additionalInfo'>
-            <p>{updBlog.url}</p>
-            <p>Likes: <span className='likesNumber'>{updBlog.likes}</span>
-              <button className='like-button' onClick={addLike}>Like</button>
-            </p>
-            <p>{blog.user.name}</p>
-            <button className='delete-button' onClick={deleteBlog}
-              style={{ display: blog.user.username === user.username ? '' : 'none' }}
-            >Delete</button>
-          </div>
-        }
-      </div >
-    )
+    <div style={blogStyle} className="blog">
+      <h4>{blog.title} - {blog.author}</h4>
+      <div className='additionalInfo'>
+        <p>{blog.url}</p>
+        <p><span className='likesNumber'>{blog.likes} like(s) </span>
+          <button className='like-button' onClick={addLike}>Like</button>
+        </p>
+        <p>Added by: {blog.user.name}
+          {/* || userWhoAdded.name} */}
+        </p>
+        {/* {userWhoAdded
+          ?
+          <button className='delete-button' onClick={handleDeleteBlog}
+            style={{ display: user.username === userWhoAdded.username ? '' : 'none' }}
+          >Delete</button>
+          : */}
+        <button className='delete-button' onClick={handleDeleteBlog}
+          style={{ display: user.username === blog.user.username ? '' : 'none' }}
+        >Delete</button>
+        {/* } */}
+      </div>
+    </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
 }
 
 export default Blog
