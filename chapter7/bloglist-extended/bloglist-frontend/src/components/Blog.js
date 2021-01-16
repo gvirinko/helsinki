@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import blogService from '../services/blogs'
@@ -6,16 +6,21 @@ import {
   updateBlog,
   deleteBlog
 } from '../reducers/blogReducer'
+import { initializeComments } from '../reducers/commentReducer'
+
+import Comments from './Comments'
 
 
 const Blog = () => {
   const id = useParams().id
-  // const users = useSelector(state => state.users)
   const blogs = useSelector(state => state.blogs)
   const blog = blogs.find(blog => blog.id === id)
-  // const userWhoAdded = users.find(user => user.id === blog.user)
   const user = useSelector(state => state.login)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializeComments())
+  }, [])
 
   if (!blog || ! user) {
     return null
@@ -51,27 +56,23 @@ const Blog = () => {
   }
 
   return (
-    <div style={blogStyle} className="blog">
-      <h4>{blog.title} - {blog.author}</h4>
-      <div className='additionalInfo'>
-        <p>{blog.url}</p>
-        <p><span className='likesNumber'>{blog.likes} like(s) </span>
-          <button className='like-button' onClick={addLike}>Like</button>
-        </p>
-        <p>Added by: {blog.user.name}
-          {/* || userWhoAdded.name} */}
-        </p>
-        {/* {userWhoAdded
-          ?
+    <div>
+      <div style={blogStyle} className="blog">
+        <h4>{blog.title} - {blog.author}</h4>
+        <div className='additionalInfo'>
+          <p>{blog.url}</p>
+          <p><span className='likesNumber'>{blog.likes} like(s) </span>
+            <button className='like-button' onClick={addLike}>Like</button>
+          </p>
+          <p>Added by: {blog.user.name}
+          </p>
           <button className='delete-button' onClick={handleDeleteBlog}
-            style={{ display: user.username === userWhoAdded.username ? '' : 'none' }}
+            style={{ display: user.username === blog.user.username ? '' : 'none' }}
           >Delete</button>
-          : */}
-        <button className='delete-button' onClick={handleDeleteBlog}
-          style={{ display: user.username === blog.user.username ? '' : 'none' }}
-        >Delete</button>
-        {/* } */}
+          {/* } */}
+        </div>
       </div>
+      <Comments blogId={blog.id} />
     </div>
   )
 }

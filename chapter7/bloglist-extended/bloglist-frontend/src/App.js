@@ -36,7 +36,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initializeBlogs())
     dispatch(initializeUsers())
-
+    // dispatch(initializeComments())
   }, [])
 
   return (
