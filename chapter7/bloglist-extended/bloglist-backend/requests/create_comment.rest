@@ -1,0 +1,6 @@
+POST http://localhost:3001/api/comments
+Content-Type: application/json
+
+{   "text": "Here is my first comment",
+    "blogId": "mooo"
+}
