@@ -11,12 +11,23 @@ import { notificationSet } from '../reducers/notificationReducer'
 const NewBlog = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.login)
+  const users = useSelector(state => state.users)
+
+  const populateWithUser = (blog) => {
+    const user = users.find(user => user.id === blog.user)
+    const userBlock = { id: user.id, name: user.name, username: user.username }
+    return { ...blog, user: userBlock }
+  }
 
   const addBlog = async (blogObject) => {
     try {
       blogService.setToken(user.token)
       const newBlog = await blogService.create(blogObject)
-      dispatch(addNewBlog(newBlog))
+      // We need to populate it with user data for correct rendering
+      // before GET request from database (where 'user' field is populated with user data
+      // from a reference table)
+      const populatedBlog = populateWithUser(newBlog)
+      dispatch(addNewBlog(populatedBlog))
       dispatch(notificationSet('A new blog has been added.', false, 5))
     }
     catch (exception) {

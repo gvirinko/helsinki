@@ -7,7 +7,6 @@ import {
   deleteBlog
 } from '../reducers/blogReducer'
 import { initializeComments } from '../reducers/commentReducer'
-
 import Comments from './Comments'
 
 
@@ -50,6 +49,7 @@ const Blog = () => {
 
   const handleDeleteBlog = async (event) => {
     event.preventDefault()
+    console.log(blog.id)
     blogService.setToken(user.token)
     await blogService.deleteBlog(blog.id)
     dispatch(deleteBlog(blog))
@@ -69,7 +69,6 @@ const Blog = () => {
           <button className='delete-button' onClick={handleDeleteBlog}
             style={{ display: user.username === blog.user.username ? '' : 'none' }}
           >Delete</button>
-          {/* } */}
         </div>
       </div>
       <Comments blogId={blog.id} />
