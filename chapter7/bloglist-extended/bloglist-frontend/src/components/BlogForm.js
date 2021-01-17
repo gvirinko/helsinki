@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Button, Form, Col } from 'react-bootstrap'
 
 const BlogForm = ({ createBlog
 }) => {
@@ -25,40 +26,39 @@ const BlogForm = ({ createBlog
 
   return (
     <div className='formDiv'>
-      <h2> Please add a new blog:</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          Title:
-          <input
-            id='title'
-            type="text"
-            value={title}
-            name="Title"
-            onChange={handleTitleChange}
-          />
-        </div>
-        <div>
-          Author:
-          <input
-            id='author'
-            type="text"
-            value={author}
-            name="Author"
-            onChange={handleAuthorChange}
-          />
-        </div>
-        <div>
-          Url:
-          <input
-            id='url'
-            type="text"
-            value={url}
-            name="Url"
-            onChange={handleUrlChange}
-          />
-        </div>
-        <button className='create-blog' type="submit">Create</button>
-      </form>
+      <h4> Please add a new blog:</h4>
+      <Form onSubmit={addBlog}>
+        <Col lg={4}>
+          <Form.Group>
+            <Form.Label>Title:</Form.Label>
+            <Form.Control
+              id='title'
+              type="text"
+              value={title}
+              name="Title"
+              onChange={handleTitleChange}/>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Author:</Form.Label>
+            <Form.Control
+              id='author'
+              type="text"
+              value={author}
+              name="Author"
+              onChange={handleAuthorChange}/>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>URL:</Form.Label>
+            <Form.Control
+              id='url'
+              type="text"
+              value={url}
+              name="Url"
+              onChange={handleUrlChange}/>
+          </Form.Group>
+        </Col>
+        <Button variant='success' className='create-blog' type="submit">Create</Button>
+      </Form>
     </div>)
 }
 

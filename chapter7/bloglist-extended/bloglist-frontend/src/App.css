@@ -7,27 +7,3 @@
   box-sizing: border-box;
   border: 1px solid red;
 } */
-
-/* .nav-panel {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-content:flex-start;
-  list-style-type: none;
-  background-color: lightgrey;
-}
-
-.nav-panel_item {
-  margin-top: auto;
-  margin-bottom: auto;
-  color: darkcyan;
-  margin-left: 0;
-  padding: 0;
-  padding-right: 20px;
-}
-
-.nav-panel_login {
-  display: flex;
-  flex-direction: row;
-  margin-left: 50px;
-} */

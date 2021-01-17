@@ -46,10 +46,10 @@ const App = () => {
         <Route path='/'>
           <div>
             {user !== null &&
-                <div>
-                  <BlogList />
-                  <NewBlog />
-                </div>
+              <div>
+                <BlogList />
+                <NewBlog />
+              </div>
             }
           </div>
         </Route>

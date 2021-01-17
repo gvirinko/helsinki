@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 import { addNewComment } from '../reducers/commentReducer'
 import commentService from '../services/comments'
 
@@ -22,20 +23,17 @@ const Comments = ({ blogId }) => {
   }
 
   return (
-    <div>
+    <div style={{ 'margin-top': '30px' }}>
       <h4>Comments:</h4>
-      <form onSubmit={addComment}>
-        <div>
-          <input
-            id='comment'
-            type="text"
-            value={comment}
-            name="Comment"
-            onChange={(event) => setComment(event.target.value)}
-          />
-        </div>
-        <button className='create-blog' type="submit">Add comment</button>
-      </form>
+      <Form onSubmit={addComment}>
+        <Form.Control
+          id='comment'
+          type="text"
+          value={comment}
+          name="Comment"
+          onChange={(event) => setComment(event.target.value)} />
+        <Button type="submit">Add Comment</Button>
+      </Form>
       <ul>
         {commentsToThisBlog.map((blog, index) =>
           <li key={index}>{blog.text}</li>

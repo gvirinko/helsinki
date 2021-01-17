@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { Card, Button } from 'react-bootstrap'
 import blogService from '../services/blogs'
-import {
-  updateBlog,
-  deleteBlog
-} from '../reducers/blogReducer'
+import { updateBlog, deleteBlog } from '../reducers/blogReducer'
 import { initializeComments } from '../reducers/commentReducer'
 import Comments from './Comments'
 
@@ -25,14 +23,6 @@ const Blog = () => {
     return null
   }
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   const addLike = async (event) => {
     event.preventDefault()
     const blogObject = {
@@ -49,28 +39,28 @@ const Blog = () => {
 
   const handleDeleteBlog = async (event) => {
     event.preventDefault()
-    console.log(blog.id)
     blogService.setToken(user.token)
     await blogService.deleteBlog(blog.id)
     dispatch(deleteBlog(blog))
   }
 
   return (
-    <div>
-      <div style={blogStyle} className="blog">
-        <h4>{blog.title} - {blog.author}</h4>
-        <div className='additionalInfo'>
+    <div style={{ 'margin-top': '30px' }}>
+      <Card style={{ width: '300px' }}>
+        <Card.Body>
+          <Card.Title>{blog.title}</Card.Title>
+          <Card.Subtitle>by {blog.author}</Card.Subtitle>
           <p>{blog.url}</p>
           <p><span className='likesNumber'>{blog.likes} like(s) </span>
             <button className='like-button' onClick={addLike}>Like</button>
           </p>
           <p>Added by: {blog.user.name}
           </p>
-          <button className='delete-button' onClick={handleDeleteBlog}
+          <Button variant='danger' onClick={handleDeleteBlog}
             style={{ display: user.username === blog.user.username ? '' : 'none' }}
-          >Delete</button>
-        </div>
-      </div>
+          >Delete</Button>
+        </Card.Body>
+      </Card>
       <Comments blogId={blog.id} />
     </div>
   )

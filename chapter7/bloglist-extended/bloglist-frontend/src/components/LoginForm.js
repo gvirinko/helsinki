@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Button, Form, Col } from 'react-bootstrap'
 import loginService from '../services/login'
 import { notificationSet } from '../reducers/notificationReducer'
 import { loggingIn } from '../reducers/loginReducer'
@@ -25,30 +26,34 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <h2> Please log in to application:</h2>
-      <div>
-        username
-        <input
-          id='username'
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button className='login-button' type="submit">login</button>
-    </form>)
+    <div>
+      <h4 style={{
+        'margin':'20px 0 30px 0' }}> Please log in to application:</h4>
+      <Form onSubmit={handleLogin}>
+        <Col lg={4}>
+          <Form.Group>
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              xs={1}
+              id='username'
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}/>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              id='password'
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}/>
+          </Form.Group>
+          <Button variant='success' className='login-button' type="submit">Login</Button>
+        </Col>
+      </Form>
+    </div>)
 }
 
 export default LoginForm

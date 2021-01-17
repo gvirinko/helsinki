@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { ListGroup } from 'react-bootstrap'
 
 
 const IndUserView = () => {
@@ -12,11 +13,13 @@ const IndUserView = () => {
   }
   return (
     <div>
-      <h5>{indUser.name} added the following blog(s):</h5>
-      {indUser.blogs.map(blog =>
-        <li key={blog.id}>{blog.title} by {blog.author}
-        </li>)
-      }
+      <h5 style={{ 'margin': '30px 0 30px 0' }}>{indUser.name} added the following blog(s):</h5>
+      <ListGroup>
+        {indUser.blogs.map(blog =>
+          <ListGroup.Item variant='flush' key={blog.id}>{blog.title} by {blog.author}
+          </ListGroup.Item>)
+        }
+      </ListGroup>
     </div>
   )
 }
