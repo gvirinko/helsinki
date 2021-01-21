@@ -179,7 +179,6 @@ const resolvers = {
         return null
       }
       const updAuthor = { ...author, born: args.setBornTo }
-      console.log(updAuthor)
       return updAuthor
     }
   }
