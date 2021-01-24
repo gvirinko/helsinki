@@ -12,10 +12,13 @@ query {
 
 export const ALL_BOOKS = gql`
 query {
-  allBooks  {
-    title
-    author
+	allBooks {
+		title
     published
+    genres
+    author {
+      name
+    }
   }
 }
 `
@@ -30,9 +33,11 @@ mutation createBook ($title: String!, $published: String!, $author: String!, $ge
   ) {
     title
     published
-    author
-    genres
-    id
+        author {
+      name
+      id
+      born
+    }
   }
 }`
 
