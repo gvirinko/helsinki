@@ -51,3 +51,11 @@ mutation changeBirthyear ($name: String!, $setBornTo: String!) {
   born
   }
 }`
+
+export const LOGIN = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password)  {
+      value
+    }
+  }
+`
