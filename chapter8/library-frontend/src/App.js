@@ -6,6 +6,7 @@ import './App.css'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
+import Recommend from './components/Recommend'
 import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
 
@@ -50,8 +51,9 @@ const App = () => {
         <button onClick={() => setPage('books')}>books</button>
         {token &&
           <>
-            <button onClick={() => setPage('add')}>add book</button>
-            <button onClick={() => logout()}>logout</button>
+          <button onClick={() => setPage('add')}>add book</button>
+          <button onClick={() => setPage('recommend')}>recommend</button>
+          <button onClick={() => logout()}>logout</button>
           </>
         }
         {!token && <button onClick={() => setPage('login')}>login</button>}
@@ -67,6 +69,9 @@ const App = () => {
 
       <NewBook
         show={page === 'add'}
+      />
+      <Recommend
+        show={page === 'recommend'}
       />
     
     </div>
