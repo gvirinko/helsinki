@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react'
 import { useApolloClient } from '@apollo/client';
+import './App.css'
 
 import Authors from './components/Authors'
 import Books from './components/Books'
@@ -67,6 +68,7 @@ const App = () => {
       <NewBook
         show={page === 'add'}
       />
+    
     </div>
   )
 }
