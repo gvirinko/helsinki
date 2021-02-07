@@ -9,12 +9,19 @@ import NewBook from './components/NewBook'
 import Recommend from './components/Recommend'
 import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
+import { BOOK_ADDED } from './queries';
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`A book with title '${subscriptionData.data.bookAdded.title}' has just been added.`)
+    }
+  })
 
   const notify = (message) => {
     setErrorMessage(message)
