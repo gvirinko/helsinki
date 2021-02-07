@@ -6,6 +6,9 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = 'NEED_HERE_A_SECRET_KEY'
 
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
+
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
@@ -71,25 +74,21 @@ const typeDefs = gql`
       password: String!
     ): Token
   }
+  type Subscription {
+    bookAdded: Book!
+  }
 `
 
 const resolvers = {
   Query: {
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
-    allBooks: (root, args) => {
-      // if (args.author) {
-      //   const booksByAuthor = books.filter(book => book.author === args.author)
-      //   if (args.genre) {
-      //     const booksOfGenre = booksByAuthor.filter(book => book.genres.includes(args.genre))
-      //     return booksOfGenre
-      //   }
-      //   return booksByAuthor
-      // }
-      // if (args.genre) {
-      //   const booksOfGenre = books.filter(book => book.genres.includes(args.genre))
-      //   return booksOfGenre
-      // }
+    allBooks: async (root, args) => {
+      if (args.genre) {
+        const books = await Book.find({}).populate('author', { name: 1, id: 1, born: 1 })
+        const booksOfGenre = books.filter(book => book.genres.includes(args.genre))
+        return booksOfGenre
+      }
       return Book.find({}).populate('author', { name: 1, id: 1, born: 1 })
     },
     allAuthors: async () => {
@@ -104,7 +103,7 @@ const resolvers = {
     },
     me: (root, args, context) => {
       return context.currentUser
-    }
+    },
   },
   Book: {
     title: (root) => root.title,
@@ -156,7 +155,10 @@ const resolvers = {
       }
       const bookObject = { ...args, id: uuid(), author: author}
       const book = new Book(bookObject)
-      return book.save()
+      book.save()
+      pubsub.publish('BOOK_ADDED', { bookAdded: book })
+
+      return book
     },
 
     editAuthor: async (root, args, context) => {
@@ -197,6 +199,11 @@ const resolvers = {
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
     },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    },
   }
 }
 
@@ -215,6 +222,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen().then(({ url }) => {
+server.listen().then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

@@ -25,7 +25,7 @@ const Books = (props) => {
   } else {
     books = allBooksList.filter(book => book.genres.includes(genre))
   }
-  console.log(books);
+  // console.log(books);
 
   const handleClick = (event) => {
     event.preventDefault()
