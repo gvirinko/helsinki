@@ -1,39 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, {
+  useState, useEffect
+} from 'react'
 import { useQuery, useLazyQuery } from '@apollo/client';
 
 import BooksTable from './BooksTable'
 import { ME, ALL_BOOKS } from '../queries'
 
 const Recommend = (props) => {
-  // console.log(props.favGenre)
-  // const [favGenre, setFavGenre] = useState('')
+  const [favGenre, setFavGenre] = useState('')
+  const resultMe = useQuery(ME, { pollInterval: 2000 })
 
-  // const resultMe = useQuery(ME, { pollInterval: 2000 })
+  const [resultBooks, {loading, data}] = useLazyQuery(ALL_BOOKS, { genre: favGenre })
 
-  // useEffect(() => {
-  //   setFavGenre(resultMe.data.me.favoriteGenre)
-  // }, [resultMe.data.me.favoriteGenre])
 
-  // if (resultMe.loading) {
-  //   return <div>loading...</div>
-  // }
-  // console.log(resultMe.data.me)
-  // setFavGenre(resultMe.data.me.favoriteGenre)
+  useEffect(() => {
+    resultBooks()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  // const books = useQuery(ALL_BOOKS, {genre: favGenre})
 
   if (!props.show) {
     return null
   }
 
-  // const books = resultBooks.data.allBooks.filter(book => book.genres.includes(favGenre))
-  // console.log(books)
+  if (resultMe.loading || loading) {
+    return <div>loading...</div>
+  }
+  if (favGenre === '') {
+    setFavGenre(resultMe.data.me.favoriteGenre)
+  }
 
   return (
     <div>
       <h2>Recommendations</h2>
-      {/* <p>Books in your favourite genre: <span className='fav_genre'>{favGenre}</span> </p> */}
-      {/* <BooksTable books={books} /> */}
+      <p>Books in your favourite genre: <span className='fav_genre'>{favGenre}</span> </p>
+      <BooksTable books={data.allBooks.filter(book => book.genres.includes(favGenre))} />
     </div>
   )
 }

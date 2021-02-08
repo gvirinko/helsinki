@@ -1,31 +1,39 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client';
+import React, { useState, useEffect } from 'react'
+import { useLazyQuery, useSubscription } from '@apollo/client';
 
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, BOOK_ADDED } from '../queries'
 import BooksTable from './BooksTable'
 
 const Books = (props) => {
   const [genre, setGenre] = useState('all')
-  const result = useQuery(ALL_BOOKS)
-  let books = []
+  const [getBooks, {loading, data}] = useLazyQuery(ALL_BOOKS)
+
+  useEffect(() => {
+    getBooks()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      console.log(`A book with title '${subscriptionData.data.bookAdded.title}' has just been added.`)
+    }
+  })
+
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (loading) {
     return <div>loading...</div>
   }
 
-  const allBooksList = result.data.allBooks
-  const allGenres = allBooksList.map(book => book.genres)
+  let books = data.allBooks
+  const allGenres = books.map(book => book.genres)
   const distinctGenres = [...new Set(allGenres.flat(1))]
 
-  if (genre === '' || genre === 'all') {
-    books = allBooksList
-  } else {
-    books = allBooksList.filter(book => book.genres.includes(genre))
+  if (genre !== '' && genre !== 'all') {
+    books = books.filter(book => book.genres.includes(genre))
   }
-  // console.log(books);
 
   const handleClick = (event) => {
     event.preventDefault()
