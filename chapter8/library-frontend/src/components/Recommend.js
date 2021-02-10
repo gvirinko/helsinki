@@ -9,9 +9,7 @@ import { ME, ALL_BOOKS, BOOK_ADDED } from '../queries'
 const Recommend = (props) => {
   const [favGenre, setFavGenre] = useState('')
   const resultMe = useQuery(ME, { pollInterval: 2000 })
-
   const [resultBooks, {loading, data, refetch}] = useLazyQuery(ALL_BOOKS, { genre: favGenre })
-
 
   useEffect(() => {
     resultBooks()
@@ -24,11 +22,9 @@ const Recommend = (props) => {
     }
   })
 
-
   if (!props.show) {
     return null
   }
-
   if (resultMe.loading || loading) {
     return <div>loading...</div>
   }
