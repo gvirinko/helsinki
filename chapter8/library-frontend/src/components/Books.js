@@ -6,7 +6,7 @@ import BooksTable from './BooksTable'
 
 const Books = (props) => {
   const [genre, setGenre] = useState('all')
-  const [getBooks, {loading, data}] = useLazyQuery(ALL_BOOKS)
+  const [getBooks, { loading, data }] = useLazyQuery(ALL_BOOKS)
 
   useEffect(() => {
     getBooks()

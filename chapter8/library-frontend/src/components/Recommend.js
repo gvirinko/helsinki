@@ -1,22 +1,28 @@
 import React, {
   useState, useEffect
 } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useQuery, useLazyQuery, useSubscription } from '@apollo/client';
 
 import BooksTable from './BooksTable'
-import { ME, ALL_BOOKS } from '../queries'
+import { ME, ALL_BOOKS, BOOK_ADDED } from '../queries'
 
 const Recommend = (props) => {
   const [favGenre, setFavGenre] = useState('')
   const resultMe = useQuery(ME, { pollInterval: 2000 })
 
-  const [resultBooks, {loading, data}] = useLazyQuery(ALL_BOOKS, { genre: favGenre })
+  const [resultBooks, {loading, data, refetch}] = useLazyQuery(ALL_BOOKS, { genre: favGenre })
 
 
   useEffect(() => {
     resultBooks()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: () => {
+      refetch()
+    }
+  })
 
 
   if (!props.show) {

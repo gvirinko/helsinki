@@ -12,16 +12,17 @@ const NewBook = (props) => {
 
   const [createBook] = useMutation(CREATE_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
-    update: (store, response) => {
-      const dataInStore = store.readQuery({ query: ALL_BOOKS })
-      store.writeQuery({
-        query: ALL_BOOKS,
-        data: {
-          ...dataInStore,
-          allBooks: [...dataInStore.allBooks, response.data.addBook]
-        }
-      })
-    }
+    // update: (store, response) => {
+    //   const dataInStore = store.readQuery({ query: ALL_BOOKS })
+    //   console.log(response.data.addBook)
+    //   store.writeQuery({
+    //     query: ALL_BOOKS,
+    //     data: {
+    //       ...dataInStore,
+    //       allBooks: [...dataInStore.allBooks, response.data.addBook]
+    //     }
+    //   })
+    // }
   })
 
   if (!props.show) {
