@@ -8,24 +8,12 @@ interface Result {
   average: number;
 }
 
-const parseArgumentsforExercises = (args: Array<string>): Array<number> => {
-
-  const days = args.slice(2).map(i => Number(i));
-
-  if (days.find(day => isNaN(day))) {
-    throw new Error('Provided values were not numbers!');
-  } else {
-    return days;
-  }
-};
-
-const exerciseCalculator = (args: Array<number>): Result => {
-  const periodLength = args.length;
-  const trainingDays = args.filter(day => day != 0).length;
-  const success = trainingDays === periodLength ? true : false;
-  const target = 2;
-  const allHours = args.reduce((acc, current) => acc + current, 0);
-  const average = allHours / periodLength;
+export const exerciseCalculator = (args: Array<number>, target: number): Result => {
+  const periodLength: number = args.length;
+  const trainingDays: number = args.filter(day => day != 0).length;
+  const success: boolean = trainingDays === periodLength ? true : false;
+  const allHours: number = args.reduce((acc, current) => acc + current, 0);
+  const average: number = allHours / periodLength;
   let rating = 0;
   let ratingDescription = "";
   if (average < 2) {
@@ -49,11 +37,3 @@ const exerciseCalculator = (args: Array<number>): Result => {
     average
   };
 };
-
-try {
-  parseArgumentsforExercises(process.argv);
-} catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
-}
-
-console.log(exerciseCalculator([3, 0, 2, 4.5, 0, 3, 1]));
