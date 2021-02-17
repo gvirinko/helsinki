@@ -1,4 +1,4 @@
-export type Gender = 'male' | 'female' | 'binary';
+// export type Gender = 'male' | 'female' | 'binary';
 
 export interface Diagnose {
   code: string;
@@ -11,6 +11,8 @@ export interface Patient {
   name: string;
   dateOfBirth: string;
   ssn: string;
-  gender: Gender;
+  gender: string;
   occupation: string;
 }
+
+export type NewPatient = Omit<Patient, 'id'>;
