@@ -3,8 +3,8 @@ Content-Type: application/json
 
 {
   "name": "Joe Malone",
-  "dateOfBirth": "2000-05-05",
+  "dateOfBirth": "2000-07-07",
   "ssn": "4444-5555",
-  "gender": "male",
-  "occupation": "parfumerist"
+  "gender": "other",
+  "occupation": "perfumerist"
 }
