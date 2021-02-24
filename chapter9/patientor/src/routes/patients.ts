@@ -7,6 +7,12 @@ router.get('/', (_req, res) => {
   res.send(patientRouter.getPatientsNoSsn());
 });
 
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const ourPatient = patientRouter.findById(id);
+  res.send(ourPatient);
+});
+
 router.post('/', (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
