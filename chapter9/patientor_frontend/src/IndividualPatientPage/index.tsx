@@ -17,6 +17,7 @@ const IndividualPatientPage: React.FC = () => {
         if (pat && !pat.ssn) {
           console.log("fetching..");
           const { data: patientWithFullData } = await axios.get(`${apiBaseUrl}/patients/${id}`);
+          console.log(patientWithFullData);
           dispatch(updatePatient(patientWithFullData));
         }
       } catch (e) {
@@ -47,6 +48,15 @@ const IndividualPatientPage: React.FC = () => {
         </h3>
         <p>SSN: {patients[id].ssn}</p>
         <p>Occupation: {patients[id].occupation}</p>
+        <h5>Entries:</h5>
+        <div>
+          {patients[id].entries?.map((entry, i) =>
+            <div key={i}>
+              <p>{entry.date} <span>{entry.description}</span></p>
+              {entry.diagnosisCodes?.map((d, i) => <li key={i}>{d}</li>)}
+            </div>
+          )}
+        </div>
       </Container>
     </div>
   );
