@@ -8,6 +8,8 @@ import {Patient} from "../types";
 
 const IndividualPatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
+  const [{ diagnoses }, ] = useStateValue();
+  console.log(diagnoses);
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
@@ -53,7 +55,11 @@ const IndividualPatientPage: React.FC = () => {
           {patients[id].entries?.map((entry, i) =>
             <div key={i}>
               <p>{entry.date} <span>{entry.description}</span></p>
-              {entry.diagnosisCodes?.map((d, i) => <li key={i}>{d}</li>)}
+              {entry.diagnosisCodes?.map((code, i) =>
+                <li key={i}>{code}
+                  <span> - {diagnoses[code].name}</span>
+                </li>
+              )}
             </div>
           )}
         </div>
