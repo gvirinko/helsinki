@@ -5,11 +5,10 @@ import { useStateValue, updatePatient } from "../state";
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
 import {Patient} from "../types";
+import EntryDetails from "../EntryDetails";
 
 const IndividualPatientPage: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
-  const [{ diagnoses }, ] = useStateValue();
-  console.log(diagnoses);
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
@@ -19,7 +18,6 @@ const IndividualPatientPage: React.FC = () => {
         if (pat && !pat.ssn) {
           console.log("fetching..");
           const { data: patientWithFullData } = await axios.get(`${apiBaseUrl}/patients/${id}`);
-          console.log(patientWithFullData);
           dispatch(updatePatient(patientWithFullData));
         }
       } catch (e) {
@@ -53,14 +51,7 @@ const IndividualPatientPage: React.FC = () => {
         <h5>Entries:</h5>
         <div>
           {patients[id].entries?.map((entry, i) =>
-            <div key={i}>
-              <p>{entry.date} <span>{entry.description}</span></p>
-              {entry.diagnosisCodes?.map((code, i) =>
-                <li key={i}>{code}
-                  <span> - {diagnoses[code].name}</span>
-                </li>
-              )}
-            </div>
+            <EntryDetails key={i} entry={entry} />
           )}
         </div>
       </Container>
