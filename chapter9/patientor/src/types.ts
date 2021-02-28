@@ -36,7 +36,7 @@ interface BaseEntry {
   specialist: string;
   diagnosisCodes?: Array<Diagnosis['code']>;
 }
-interface HealthCheckEntry extends BaseEntry {
+export interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;
 }
@@ -59,3 +59,6 @@ interface OccupationalHealthcareEntry extends BaseEntry {
 }
 
 export type Entry = HealthCheckEntry | HospitalEntry | OccupationalHealthcareEntry;
+
+// export type NewEntry = Omit<Entry, 'id'>;
+export type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id'>;

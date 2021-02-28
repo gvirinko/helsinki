@@ -1,5 +1,5 @@
 import patients from '../../data/data_patients';
-import { Patient, NewPatient } from '../types';
+import { Patient, NewPatient, Entry, NewHealthCheckEntry } from '../types';
 
 const getPatients = (): Array<Patient> => {
   return patients;
@@ -29,9 +29,35 @@ const addPatient = (entry: NewPatient): Patient => {
   return newPatient;
 };
 
+const addHealthCheckEntry = (entry: NewHealthCheckEntry, patientId: string): Entry[] | undefined => {
+  const newHealthCheckEntry = {
+    id: (Math.floor(Math.random() * Math.floor(100))).toString(),
+    ...entry
+  };
+  patients.map(patient => {
+    if (patient.id === patientId) {
+      if (patient.entries) {
+        patient.entries.push(newHealthCheckEntry);
+      } else {
+        patient.entries = [newHealthCheckEntry];
+      }
+    }
+    return patient;
+  });
+
+  // const updPatient = findById(id).entries;
+  const patient = findById(patientId);
+  if (patient) {
+    return patient.entries;
+  } else {
+    return undefined;
+  }
+};
+
 export default {
   getPatients,
   getPatientsNoSsn,
   findById,
-  addPatient
+  addPatient,
+  addHealthCheckEntry
 };
