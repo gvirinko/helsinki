@@ -3,7 +3,7 @@ import { Segment } from "semantic-ui-react";
 
 import { HospitalEntry } from "../types";
 
-const HospitalDetails: React.FC<{ entry: HospitalEntry }> = ({ entry }) => {
+const HospitalDetails: React.FC<{ entry:  HospitalEntry }> = ({ entry }) => {
   return (
     <Segment>
       <p className="ui header">{entry.date} <i className="hospital icon large" /></p>

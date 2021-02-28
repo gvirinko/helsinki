@@ -4,7 +4,7 @@ import HospitalDetails from "../components/HospitalDetails";
 import OccupationalHealthcareDetails from "../components/OccupationalHealthcareDetails";
 import {Entry} from "../types";
 
-const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
+const EntryDetails: React.FC<{ entry: Entry  }> = ({ entry }) => {
   const assertNever = (value: never): never => {
     throw new Error(
       `Unhandled discriminated union member: ${JSON.stringify(value)}`

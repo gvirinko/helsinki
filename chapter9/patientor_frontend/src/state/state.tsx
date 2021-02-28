@@ -51,6 +51,13 @@ export const updatePatient = (payload: Patient): Action => {
   }
 };
 
+// export const addEntry = (payload: Patient): Action => {
+//   return {
+//     type: "ADD_ENTRY",
+//     payload: payload
+//   }
+// };
+
 export const setDiagnosisList = (payload: Diagnosis[]): Action => {
   return {
     type: "SET_DIAGNOSIS_LIST",

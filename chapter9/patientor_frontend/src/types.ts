@@ -9,6 +9,11 @@ export enum Gender {
   Female = "female",
   Other = "other"
 }
+export enum Visit {
+  Hospital = "Hospital",
+  HealthCheck = "Health Check",
+  OccupationalHealthcare = "Occupational Healthcare"
+}
 
 export interface Patient {
   id: string;

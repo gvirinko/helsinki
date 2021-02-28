@@ -29,7 +29,7 @@ const addPatient = (entry: NewPatient): Patient => {
   return newPatient;
 };
 
-const addHealthCheckEntry = (entry: NewHealthCheckEntry, patientId: string): Entry[] | undefined => {
+const addHealthCheckEntry = (entry: NewHealthCheckEntry, patientId: string): Entry | undefined => {
   const newHealthCheckEntry = {
     id: (Math.floor(Math.random() * Math.floor(100))).toString(),
     ...entry
@@ -44,11 +44,9 @@ const addHealthCheckEntry = (entry: NewHealthCheckEntry, patientId: string): Ent
     }
     return patient;
   });
-
-  // const updPatient = findById(id).entries;
   const patient = findById(patientId);
   if (patient) {
-    return patient.entries;
+    return newHealthCheckEntry;
   } else {
     return undefined;
   }
